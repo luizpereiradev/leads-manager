@@ -31,3 +31,20 @@ export async function GET(request: Request) {
   }
   return NextResponse.json({ message: lead });
 }
+
+export async function DELETE(request: Request) {
+  const id = getId(request.url);
+  const lead = await getLead(id);
+  if ('error' in lead) {
+    return NextResponse.json(lead.error, { status: lead.cod });
+  }
+  await prisma.lead.update({
+    where: {
+      id,
+    },
+    data: {
+      status: "Arquivado",
+    }, 
+  });
+  return NextResponse.json({ message: "Lead Arquivado" });
+}
