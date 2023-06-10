@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
 import LeadItem from "./leadItem";
 import { IleadId } from "@/types";
+import { useQuery } from "react-query";
 
 const getLeads = async () => {
   const res = await fetch("/api/leads");
@@ -11,10 +11,8 @@ const getLeads = async () => {
 };
 
 function LeadsTable() {
-  const [leads, setLeads] = useState<IleadId[]>([]);
-  useEffect(() => {
-    getLeads().then((leads) => setLeads(leads));
-  }, []);
+  const { data, isError, isLoading } = useQuery("leads", getLeads);
+  if (isError) return <div>Erro ao carregar leads</div>;
   return (
     <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
       <thead className="bg-gray-50 dark:bg-gray-800">
@@ -57,9 +55,12 @@ function LeadsTable() {
         </tr>
       </thead>
       <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
-        {leads.map((item) => (
-          <LeadItem key={item.id} lead={item} />
-        ))}
+        {isLoading && <td>Carregando...</td>}
+        {(data as IleadId[])
+          ?.map((i) => (i.status === "Arquivado" ? null : i))
+          .map((item) => item && (
+            <LeadItem key={item.id} lead={item} />
+          ))}
       </tbody>
     </table>
   );

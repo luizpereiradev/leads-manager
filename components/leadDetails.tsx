@@ -5,15 +5,24 @@ import React, { Fragment, useState } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { IleadId } from "@/types";
 import moment from "moment";
+import { useMutation, useQueryClient } from "react-query";
 
-const HandleArquive = (id : number) => {
-    fetch(`/api/leads/${id}`, {
-        method: "DELETE"
-    });
-}
+const handleArquive = async (id: number) => {
+  return await fetch(`/api/leads/${id}`, {
+    method: "DELETE",
+  });
+};
 
 const LeadDetails = ({ lead }: { lead: IleadId }) => {
   let [isOpen, setIsOpen] = useState(false);
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation(() => handleArquive(lead.id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("leads");
+    }
+  });
 
   return (
     <DialogPrimitive.Root open={isOpen} onOpenChange={setIsOpen}>
@@ -75,9 +84,7 @@ const LeadDetails = ({ lead }: { lead: IleadId }) => {
                   </p>
                   <p>messagem: {lead.descricao}</p>
                 </div>
-                <button onClick={() => HandleArquive(lead.id)}>
-                    arquivar
-                </button>
+                <button onClick={() => mutate()}>arquivar</button>
               </div>
               <DialogPrimitive.Close
                 className={clsx(

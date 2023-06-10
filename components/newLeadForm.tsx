@@ -13,12 +13,13 @@ import { z } from "zod";
 import { zodI18nMap } from "zod-i18n-map";
 import { leadSchema } from "@/libs/validations";
 import { initTranslation } from "@/libs/translation";
+import { useMutation, useQueryClient } from "react-query";
 
 initTranslation();
 z.setErrorMap(zodI18nMap);
 
-const HandleAdd = (newLead: Ilead) => {
-  fetch("/api/leads", {
+const handleAdd = (newLead: Ilead) => {
+  return fetch("/api/leads", {
     method: "POST",
     body: JSON.stringify(newLead),
   });
@@ -26,9 +27,14 @@ const HandleAdd = (newLead: Ilead) => {
 
 const NewLeadForm = () => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const queryClient = useQueryClient();
+
+  
   const {
     register,
+    watch,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<Ilead>({
     mode: "all",
@@ -36,8 +42,15 @@ const NewLeadForm = () => {
     resolver: zodResolver(leadSchema),
   });
 
+  const { mutate } = useMutation(() => handleAdd(watch()), {
+    onSuccess: () => {
+      queryClient.invalidateQueries("leads");
+      reset();
+    }
+  });
+
   const onSubmit = (data: Ilead) => {
-    HandleAdd(data);
+    mutate()
     setIsOpen(false);
   };
 
