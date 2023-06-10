@@ -2,13 +2,7 @@ import prisma from "@/libs/prisma";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-type Ilead = {
-    nome: string;
-    mail: string;
-    telefone: string;
-    status: string;
-    descricao: string;
-};
+import { Ilead } from "@/types";
 
 async function createLead(lead: Ilead) {
   const newLead = await prisma.lead.create({
