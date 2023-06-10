@@ -1,7 +1,6 @@
 import prisma from "@/libs/prisma";
 import { NextResponse } from "next/server";
 import { z } from "zod";
-
 import { Ilead } from "@/types";
 
 async function createLead(lead: Ilead) {
