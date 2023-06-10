@@ -1,9 +1,11 @@
 import moment from "moment";
 import { IleadId } from "@/types";
+import { LeadDetails } from "./leadDetails";
 
 function LeadItem({ lead }: { lead: IleadId }) {
   return (
     <tr className="relative">
+      <LeadDetails lead={lead} />
       <td className="px-4 py-4 text-sm font-medium whitespace-nowrap">
         <div>
           <h2 className="font-medium text-gray-800 dark:text-white ">
