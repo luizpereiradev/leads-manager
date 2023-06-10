@@ -14,6 +14,6 @@ model lead {
   nome      String
   mail      String
   telefone  String
-  status    String
+  status    String? @default("novo")
   descricao String
 }

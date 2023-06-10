@@ -7,6 +7,15 @@ import React, { Fragment } from "react";
 import { IoCloseOutline } from "react-icons/io5";
 import { useForm } from "react-hook-form";
 import { Ilead } from "@/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import FormField from "./formField";
+import { z } from "zod";
+import { zodI18nMap } from "zod-i18n-map";
+import { leadSchema } from "@/libs/validations";
+import { initTranslation } from "@/libs/translation";
+
+initTranslation();
+z.setErrorMap(zodI18nMap);
 
 const HandleAdd = (newLead: Ilead) => {
   fetch("/api/leads", {
@@ -21,10 +30,14 @@ const NewLeadForm = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Ilead>();
+  } = useForm<Ilead>({
+    mode: "all",
+    reValidateMode: "onChange",
+    resolver: zodResolver(leadSchema),
+  });
 
   const onSubmit = (data: Ilead) => {
-    HandleAdd({ ...data, status: "novo" });
+    HandleAdd(data);
     setIsOpen(false);
   };
 
@@ -75,98 +88,48 @@ const NewLeadForm = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="mt-2 space-y-2"
               >
-                <fieldset>
-                  <label
-                    htmlFor="nome"
-                    className="text-xs font-medium text-gray-700 dark:text-gray-400"
-                  >
-                    Nome
-                  </label>
-                  <input
-                    {...register("nome", { required: true })}
-                    id="nome"
-                    type="text"
-                    placeholder="Tim"
-                    className={clsx(
-                      "mt-1 block w-full rounded-md py-2 px-3",
-                      "text-sm text-gray-700 placeholder:text-gray-500 dark:text-gray-400 dark:placeholder:text-gray-600",
-                      "border border-gray-400 focus-visible:border-transparent dark:border-gray-700 dark:bg-gray-800",
-                      "focus:outline-none focus-visible:ring focus-visible:ring-opacity-75"
-                    )}
-                  />
-                  {errors.nome && <span>Este campo é obrigatório</span>}
-                </fieldset>
-                <fieldset>
-                  <label
-                    htmlFor="mail"
-                    className="text-xs font-medium text-gray-700 dark:text-gray-400"
-                  >
-                    E-mail
-                  </label>
-                  <input
-                    {...register("mail", { required: true })}
-                    id="mail"
-                    type="text"
-                    placeholder="Tim@gmail.com"
-                    className={clsx(
-                      "mt-1 block w-full rounded-md py-2 px-3",
-                      "text-sm text-gray-700 placeholder:text-gray-500 dark:text-gray-400 dark:placeholder:text-gray-600",
-                      "border border-gray-400 focus-visible:border-transparent dark:border-gray-700 dark:bg-gray-800",
-                      "focus:outline-none focus-visible:ring focus-visible:ring-opacity-75"
-                    )}
-                  />
-                  {errors.mail && <span>Este campo é obrigatório</span>}
-                </fieldset>
+                <FormField
+                  label="Nome"
+                  name="nome"
+                  placeholder="Tim"
+                  register={register}
+                  errors={errors}
+                />
 
-                <fieldset>
-                  <label
-                    htmlFor="telefone"
-                    className="text-xs font-medium text-gray-700 dark:text-gray-400"
-                  >
-                    Telefone
-                  </label>
-                  <input
-                    {...register("telefone", { required: true })}
-                    id="telefone"
-                    placeholder="(99) 99999-9999"
-                    className={clsx(
-                      "mt-1 block w-full rounded-md py-2 px-3",
-                      "text-sm text-gray-700 placeholder:text-gray-500 dark:text-gray-400 dark:placeholder:text-gray-600",
-                      "border border-gray-400 focus-visible:border-transparent dark:border-gray-700 dark:bg-gray-800",
-                      "focus:outline-none focus-visible:ring focus-visible:ring-opacity-75"
-                    )}
-                  />
-                  {errors.telefone && <span>Este campo é obrigatório</span>}
-                </fieldset>
+                <FormField
+                  label="Telefone"
+                  name="telefone"
+                  placeholder="11999999999"
+                  register={register}
+                  errors={errors}
+                  mask="(99) 99999-9999"
+                />
 
-                <fieldset>
-                  <label
-                    htmlFor="descricao"
-                    className="text-xs font-medium text-gray-700 dark:text-gray-400"
-                  >
-                    Mensagem
-                  </label>
-                  <textarea
-                    {...register("descricao", { required: true })}
-                    id="descricao"
-                    placeholder="Olá, gostaria de saber mais sobre o produto X"
-                    className={clsx(
-                      "mt-1 block w-full rounded-md py-2 px-3",
-                      "text-sm text-gray-700 placeholder:text-gray-500 dark:text-gray-400 dark:placeholder:text-gray-600",
-                      "border border-gray-400 focus-visible:border-transparent dark:border-gray-700 dark:bg-gray-800",
-                      "focus:outline-none focus-visible:ring focus-visible:ring-opacity-75"
-                    )}
-                  />
-                  {errors.descricao && <span>Este campo é obrigatório</span>}
-                </fieldset>
+                <FormField
+                  label="E-mail"
+                  name="mail"
+                  placeholder="email@gmail.com"
+                  register={register}
+                  errors={errors}
+                />
+
+                <FormField
+                  label="Descrição"
+                  name="descricao"
+                  placeholder="Descrição"
+                  register={register}
+                  errors={errors}
+                />
 
                 <div className="mt-4 flex justify-end">
                   <DialogPrimitive.Close
+                    disabled={Object.keys(errors).length > 0}
                     className={clsx(
                       "inline-flex select-none justify-center rounded-md px-4 py-2 text-sm font-medium",
                       "bg-purple-600 text-white hover:bg-purple-700 dark:bg-purple-700 dark:text-gray-100 dark:hover:bg-purple-600",
                       "border border-transparent",
-                      "focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75"
+                      "focus:outline-none focus-visible:ring focus-visible:ring-purple-500 focus-visible:ring-opacity-75",
+                      "disabled:opacity-50 disabled:cursor-not-allowed"
                     )}
                     type="submit"
                   >

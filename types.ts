@@ -3,7 +3,7 @@ export type Ilead = {
     nome: string;
     mail: string;
     telefone: string;
-    status: string;
+    status?: string;
     descricao: string;
 };
 
