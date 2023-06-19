@@ -2,8 +2,6 @@ import express from "express";
 
 const server = express();
 
-server.get("/", (request, response) => {
-  return response.send("Hello!");
-});
+server.use(express.json());
 
 export default server;
