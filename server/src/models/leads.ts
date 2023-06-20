@@ -17,7 +17,13 @@ async function getId (id: number) {
 	return leads;
 }
 
+async function getAll () {
+	const leads = await prisma.lead.findMany();
+	return leads;
+}
+
 export default {
 	insert,
-	getId
+	getId,
+	getAll
 };

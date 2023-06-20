@@ -29,8 +29,23 @@ async function getId(id: number) {
 	};
 }
 
+async function getAll() {
+	const lead = await leads.getAll();
+	if (!lead) {
+		return {
+			type: 'ID_NOT_FOUND',
+			message: 'Lead not found'
+		};
+	}
+	return {
+		type: null,
+		message: lead
+	};
+}
+
 
 export default {
 	insert,
-	getId
+	getId,
+	getAll
 };
