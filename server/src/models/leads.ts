@@ -32,9 +32,19 @@ async function updateLead(id: number, data: ILead) {
 	return leads;
 }
 
+async function getByName (name: string) {
+	const leads = await prisma.lead.findMany({
+		where: {
+			name
+		}
+	});
+	return leads;
+}
+
 export default {
 	insert,
 	getId,
 	getAll,
-	updateLead
+	updateLead,
+	getByName
 };

@@ -61,9 +61,28 @@ async function updateLead(id: number, data: ILead) {
 	};
 }
 
+async function getByName(name: string) {
+	const allLeads = await leads.getAll();
+	const leadsNames = allLeads.filter((lead) => {
+		const leadName = lead.name.toLowerCase();
+		return leadName.includes(name.toLowerCase());
+	});
+	if (leadsNames.length === 0) {
+		return {
+			type: 'NAME_NOT_FOUND',
+			message: 'Leads not found'
+		};
+	}
+	return {
+		type: null,
+		message: leadsNames
+}
+}
+
 export default {
 	insert,
 	getId,
 	getAll,
-	updateLead
+	updateLead,
+	getByName
 };
