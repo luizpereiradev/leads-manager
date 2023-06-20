@@ -22,8 +22,19 @@ async function getAll () {
 	return leads;
 }
 
+async function updateLead(id: number, data: ILead) {
+	const leads = await prisma.lead.update({
+		where: {
+			id
+		},
+		data
+	});
+	return leads;
+}
+
 export default {
 	insert,
 	getId,
-	getAll
+	getAll,
+	updateLead
 };

@@ -1,8 +1,10 @@
 import { ILead } from '../../types';
-import { leadSchema } from './schemas';
+import { leadSchema, OptionalLeadSchema } from './schemas';
 
-export const validateLead = (lead: ILead) => {
-	const validate = leadSchema.safeParse(lead);
+export const validateLead = (lead: ILead, optional?: boolean) => {
+	const validate = optional ?
+		OptionalLeadSchema.safeParse(lead):
+		leadSchema.safeParse(lead);
 
 	if (!validate.success) {
 		const { errors } = validate.error;

@@ -43,9 +43,27 @@ async function getAll() {
 	};
 }
 
+async function updateLead(id: number, data: ILead) {
+	const error = validateLead(data, true);
+	if (error.type){
+		return error;
+	}
+	const lead = await leads.updateLead(id, data);
+	if (!lead) {
+		return {
+			type: 'ID_NOT_FOUND',
+			message: 'Lead not found'
+		};
+	}
+	return {
+		type: null,
+		message: lead
+	};
+}
 
 export default {
 	insert,
 	getId,
-	getAll
+	getAll,
+	updateLead
 };
