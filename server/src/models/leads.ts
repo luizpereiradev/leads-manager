@@ -8,6 +8,16 @@ async function insert(lead: ILead) {
 	return newLead;
 }
 
+async function getId (id: number) {
+	const leads = await prisma.lead.findUnique({
+		where: {
+			id
+			}
+			});
+	return leads;
+}
+
 export default {
-	insert
+	insert,
+	getId
 };
