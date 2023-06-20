@@ -8,6 +8,7 @@ export const validateLead = (lead: ILead) => {
 		const { errors } = validate.error;
 
 		return {
+
 			type: 'VALIDATION_ERROR',
 			message: {
 				message: 'lead validation error',
