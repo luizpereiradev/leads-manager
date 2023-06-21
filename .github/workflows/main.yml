@@ -21,8 +21,17 @@ jobs:
         with:
           node-version: 18
 
+      - name: Set up database with docker-compose
+        run: docker-compose up -d
+
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
+
+      - name: Prisma generate
+        run: npm run prisma:generate
+
+      - name: Prima migrate
+        run: npm run prisma:migrate
 
       - name: Run Jest
         run: npm run test -w server
