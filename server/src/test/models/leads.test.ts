@@ -22,4 +22,11 @@ describe("Leads Model", () => {
       expect(result).to.equal(completeLead);
     });
   });
+  describe("getAll", () => {
+    it("should return leads if leads are found", async () => {
+      prisma.lead.findMany = sinon.stub().resolves([completeLead]);
+      const result = await leads.getAll();
+      expect(result).to.deep.equal([completeLead]);
+    });
+  });
 });

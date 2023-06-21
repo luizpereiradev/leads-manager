@@ -8,7 +8,7 @@ describe("Leads Controller", () => {
   afterEach(() => {
     sinon.restore();
   });
-  
+
   describe("insert", () => {
     it("should return lead if insert", async () => {
       sinon
@@ -83,6 +83,20 @@ describe("Leads Controller", () => {
       };
       await leads.getId(req, res);
       expect(res.status.calledWith(404)).to.be.true;
+    });
+  });
+  describe("getAll", () => {
+    it("should return leads if leads are found", async () => {
+        sinon
+            .stub(leadsService, "getAll")
+            .resolves({ type: null, message: [completeLead] });
+        const req: any = {};
+        const res: any = {
+            status: sinon.stub().returnsThis(),
+            json: sinon.stub().returnsThis(),
+        };
+        await leads.getAll(req, res);
+        expect(res.status.calledWith(200)).to.be.true;
     });
   });
 });
