@@ -138,4 +138,40 @@ describe("Leads Controller", () => {
       expect(res.status.calledWith(404)).to.be.true;
     });
   });
+
+  describe("getByName", () => {
+    it("should return lead if lead is found", async () => {
+      sinon
+        .stub(leadsService, "getByName")
+        .resolves({ type: null, message: [completeLead] });
+      const req: any = {
+        params: {
+          name: "test",
+        },
+      };
+      const res: any = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub().returnsThis(),
+      };
+      await leads.getByName(req, res);
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it("should return error if lead is not found", async () => {
+      sinon
+        .stub(leadsService, "getByName")
+        .resolves({ type: "NAME_NOT_FOUND", message: "Lead not found" });
+      const req: any = {
+        params: {
+          name: "test",
+        },
+      };
+      const res: any = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub().returnsThis(),
+      };
+      await leads.getByName(req, res);
+      expect(res.status.calledWith(404)).to.be.true;
+    });
+  });
 });

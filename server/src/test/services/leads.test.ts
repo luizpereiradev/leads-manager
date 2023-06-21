@@ -19,7 +19,7 @@ describe("Leads Service", () => {
       sinon.stub(leads, "insert").resolves(completeLead);
       const result = await leadsService.insert(newValidLead);
       expect(result.type).to.equal(null);
-      expect(result.message).to.equal(completeLead);
+      expect(result.message).to.deep.equal(completeLead);
     });
   });
 
@@ -34,7 +34,7 @@ describe("Leads Service", () => {
       sinon.stub(leads, "getId").resolves(completeLead);
       const result = await leadsService.getId(1);
       expect(result.type).to.equal(null);
-      expect(result.message).to.equal(completeLead);
+      expect(result.message).to.deep.equal(completeLead);
     });
   });
 
@@ -49,16 +49,25 @@ describe("Leads Service", () => {
 
   describe("updateLead", () => {
     it("return updated lead", async () => {
-        sinon.stub(leads, "updateLead").resolves(completeLead);
-        const result = await leadsService.updateLead(1, newValidLead);
-        expect(result.type).to.equal(null);
-        expect(result.message).to.equal(completeLead);
+      sinon.stub(leads, "updateLead").resolves(completeLead);
+      const result = await leadsService.updateLead(1, newValidLead);
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal(completeLead);
     });
 
     it("return error if lead is not found", async () => {
-        sinon.stub(leads, "updateLead").resolves(undefined);
-        const result = await leadsService.updateLead(1, newValidLead);
-        expect(result.type).to.equal("ID_NOT_FOUND");
+      sinon.stub(leads, "updateLead").resolves(undefined);
+      const result = await leadsService.updateLead(1, newValidLead);
+      expect(result.type).to.equal("ID_NOT_FOUND");
+    });
+  });
+
+  describe("getByName", () => {
+    it("return lead by name", async () => {
+      sinon.stub(leads, "getByName").resolves([completeLead]);
+      const result = await leadsService.getByName("a");
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal([completeLead]);
     });
   });
 });
