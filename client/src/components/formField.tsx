@@ -61,3 +61,5 @@ const FormField = ({
     </fieldset>
   )
 }
+
+export default FormField;
