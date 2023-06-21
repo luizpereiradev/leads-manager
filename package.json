@@ -13,5 +13,9 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "react-hook-form": "^7.45.0",
+    "zod": "^3.21.4"
   }
 }
