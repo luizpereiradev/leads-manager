@@ -1,6 +1,3 @@
-import leads from './leads';
+import leads from "./leads";
 
-export {
-    leads
-};
-
+export { leads };
