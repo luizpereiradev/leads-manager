@@ -28,10 +28,10 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Prisma generate
-        run: npm run prisma:generate
+        run: npm run prisma:generate -w server
 
       - name: Prima migrate
-        run: npm run prisma:migrate
+        run: npm run prisma:migrate -w server
 
       - name: Run Jest
         run: npm run test -w server
