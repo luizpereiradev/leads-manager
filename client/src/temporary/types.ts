@@ -9,4 +9,5 @@ export type ILead = {
 export type ILeadId = ILead & {
   id: number;
   createdAt: Date;
+  updatedAt: Date;
 };
