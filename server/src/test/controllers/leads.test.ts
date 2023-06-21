@@ -85,18 +85,57 @@ describe("Leads Controller", () => {
       expect(res.status.calledWith(404)).to.be.true;
     });
   });
+
   describe("getAll", () => {
     it("should return leads if leads are found", async () => {
-        sinon
-            .stub(leadsService, "getAll")
-            .resolves({ type: null, message: [completeLead] });
-        const req: any = {};
-        const res: any = {
-            status: sinon.stub().returnsThis(),
-            json: sinon.stub().returnsThis(),
-        };
-        await leads.getAll(req, res);
-        expect(res.status.calledWith(200)).to.be.true;
+      sinon
+        .stub(leadsService, "getAll")
+        .resolves({ type: null, message: [completeLead] });
+      const req: any = {};
+      const res: any = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub().returnsThis(),
+      };
+      await leads.getAll(req, res);
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+  });
+
+  describe("updateLead", () => {
+    it("return updated lead", async () => {
+      sinon
+        .stub(leadsService, "updateLead")
+        .resolves({ type: null, message: completeLead });
+      const req: any = {
+        params: {
+          id: 1,
+        },
+        body: newValidLead,
+      };
+      const res: any = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub().returnsThis(),
+      };
+      await leads.updateLead(req, res);
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it("return error if lead is not found", async () => {
+      sinon
+        .stub(leadsService, "updateLead")
+        .resolves({ type: "ID_NOT_FOUND", message: "Lead not found" });
+      const req: any = {
+        params: {
+          id: 1,
+        },
+        body: newValidLead,
+      };
+      const res: any = {
+        status: sinon.stub().returnsThis(),
+        json: sinon.stub().returnsThis(),
+      };
+      await leads.updateLead(req, res);
+      expect(res.status.calledWith(404)).to.be.true;
     });
   });
 });

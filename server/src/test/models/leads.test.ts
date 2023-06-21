@@ -29,4 +29,18 @@ describe("Leads Model", () => {
       expect(result).to.deep.equal([completeLead]);
     });
   });
+
+  describe("updateLead", () => {
+    it("return updated lead", async () => {
+      prisma.lead.update = sinon.stub().resolves(completeLead);
+      const result = await leads.updateLead(1, newValidLead);
+      expect(result).to.equal(completeLead);
+    });
+
+    it("return null if lead is not found", async () => {
+      prisma.lead.update = sinon.stub().resolves(null);
+      const result = await leads.updateLead(1, newValidLead);
+      expect(result).to.equal(null);
+    });
+  });
 });
