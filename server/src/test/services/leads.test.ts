@@ -69,5 +69,27 @@ describe("Leads Service", () => {
       expect(result.type).to.equal(null);
       expect(result.message).to.deep.equal([completeLead]);
     });
+
+    it("return error if lead is not found", async () => {
+      sinon.stub(leads, "getByName").resolves([]);
+      const result = await leadsService.getByName("a");
+      expect(result.type).to.equal("NAME_NOT_FOUND");
+    });
+  });
+
+  describe("getByStatus", () => {
+    it("return error if lead is not found", async () => {
+      sinon.stub(leads, "getByStatus").resolves(undefined);
+      const result = await leadsService.getByStatus("a");
+      expect(result.message).to.equal("Status not found");
+      expect(result.type).to.equal("STATUS_NOT_FOUND");
+    });
+
+    it("return lead by Status", async () => {
+      sinon.stub(leads, "getByStatus").resolves([completeLead]);
+      const result = await leadsService.getByStatus("a");
+      expect(result.type).to.equal(null);
+      expect(result.message).to.deep.equal([completeLead]);
+    });
   });
 });

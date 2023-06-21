@@ -78,13 +78,14 @@ async function getByName(name: string) {
 
 async function getByStatus(status: string) {
 	const leadsStatus = await leads.getByStatus(status);
+	
 	if (!leadsStatus || leadsStatus.length === 0) {
 		return {
 			type: 'STATUS_NOT_FOUND',
 			message: 'Status not found'
 		};
 	}
-	
+
 	return {
 		type: null,
 		message: leadsStatus

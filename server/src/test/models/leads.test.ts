@@ -54,4 +54,12 @@ describe("Leads Model", () => {
       expect(result).to.deep.equal([completeLead]);
     });
   });
+
+  describe("getByStatus", () => {
+    it("return lead by status", async () => {
+      prisma.lead.findMany = sinon.stub().resolves([completeLead]);
+      const result = await leads.getByStatus("status");
+      expect(result).to.deep.equal([completeLead]);
+    });
+  });
 });
