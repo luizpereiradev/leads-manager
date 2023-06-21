@@ -15,7 +15,6 @@
     }
   },
   "dependencies": {
-    "react-hook-form": "^7.45.0",
     "zod": "^3.21.4"
   }
 }
