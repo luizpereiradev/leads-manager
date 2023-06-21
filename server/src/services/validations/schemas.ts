@@ -11,3 +11,12 @@ export const leadSchema = z.object({
 	description: z.string(),
 	status: z.string().optional()
 });
+
+export const OptionalLeadSchema = z.object({
+	name: z.string().min(2).optional(),
+	email: z.string().min(1).email('e-mail invalido.').optional(),
+	phone: z.string().regex(phoneRegex, 'Numero invalido!').optional(),
+	description: z.string().optional(),
+	status: z.string().optional()
+});
+
