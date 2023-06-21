@@ -5,7 +5,9 @@
   "scripts": {
     "test": "jest",
     "dev": "nodemon --watch 'src/' --exec 'ts-node src/app.ts' -e ts",
-    "test:mocha": "mocha --require ts-node/register src/test/**/*.test.ts --exit"
+    "test:mocha": "mocha --require ts-node/register src/test/**/*.test.ts --exit",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev"
   },
   "author": "",
   "license": "ISC",
