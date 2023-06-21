@@ -3,7 +3,6 @@ import { ILead } from '../types';
 import { validateLead } from './validations/validateInputValues';
 
 async function insert(lead: ILead) {
-	console.log('lead', lead);
 	const error = validateLead(lead);
 	if (error.type){
 		return error;
